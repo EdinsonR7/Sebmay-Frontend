@@ -4,16 +4,12 @@ import ProductNew from './pages/ProductNew';
 import ProductEdit from './pages/ProductEdit';
 import ProductDetail from './pages/ProductDetail';
 
-/**
- * App: Router principal del módulo de productos/servicios para SebMay.
- * - Cumple con estándares: PascalCase en componentes, camelCase en funciones.
- * - Comentarios explicativos en funciones clave.
- */
+
 export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>SebMay — Gestión de Productos / Servicios</h1>
+        <h1>SebMay — Gestión de Productos</h1>
         <nav>
           <Link to="/" className="nav-link">Productos</Link>
           <Link to="/productos/new" className="nav-link btn">Nuevo</Link>

@@ -97,6 +97,7 @@ body {
   align-items    : center;
   gap            : 6px;
   margin-right   : 10px;
+  margin-bottom  : 1rem;
 }
 
 .btn:hover {
@@ -137,6 +138,7 @@ h2 {
   width          : 100%;
   border-collapse: collapse;
   background     : var(--card-bg);
+  border-radius  : 5px;
 }
 
 .table thead {
@@ -189,6 +191,10 @@ h2 {
 
 .btn.danger:hover {
   box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.nuevo-producto {
+  text-align: center;
 }
 
 /* Form */
@@ -326,53 +332,51 @@ textarea.form-control {
   font-weight  : 600;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* ✅ Responsive table for small screens */
+@media (max-width: 840px) {
+
   .app-header {
     flex-direction: column;
-    align-items   : flex-start;
-    gap           : 12px;
-    padding       : 16px 20px;
-  }
-
-  .app-header h1 {
-    font-size: 20px;
+    gap           : 10px;
   }
 
   .app-main {
-    padding: 20px 16px;
+    padding: 10px;
   }
 
-  .form-container,
-  .detail-container {
-    padding      : 24px 20px;
-    border-radius: 12px;
+  .table-wrapper {
+    overflow-x                : auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius             : 8px;
+  }
+
+  .table {
+    width: 700px;
+    /* Permite scroll horizontal sin romper diseño */
   }
 
   .table th,
   .table td {
-    padding  : 12px 14px;
-    font-size: 14px;
+    padding    : 10px 12px;
+    font-size  : 13px;
+    white-space: nowrap;
+    /* Evita que el texto se rompa en varias líneas */
   }
 
-  h2 {
-    font-size: 24px;
-  }
-
-  .form-buttons {
-    flex-direction: column-reverse;
+  .btn.small {
+    padding  : 6px 10px;
+    font-size: 12px;
   }
 
   .btn {
-    width          : 100%;
-    justify-content: center;
-    margin-bottom  : 0.5rem;
+    margin-bottom: 10px;
   }
 
-  .detail {
-    width: 100%;
+  .form-buttons {
+    justify-content: center;
   }
 }
+
 
 /* Loading State */
 .loading {

@@ -1,79 +1,64 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { localProductService } from '../api/localProductService';
-
-/**
- * ProductList: muestra la tabla de productos/servicios.
- * - Usa localProductService para CRUD (simula API REST).
- * - Maneja estados: loading, error.
- */
+import { useEffect, useState } from "react";
+import { getProductos, deleteProducto } from "../api/productosApi";
+import { Link } from "react-router-dom";
 
 export default function ProductList() {
-  const [products, setProducts] = useState([]); // array de productos
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [productos, setProductos] = useState([]);
 
-  // Cargar productos al montar
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const data = await localProductService.getAll();
-        if (mounted) setProducts(data);
-      } catch (err) {
-        console.error(err);
-        if (mounted) setError('Error cargando productos');
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    })();
-    return () => { mounted = false; };
+    loadProductos();
   }, []);
 
+  const loadProductos = async () => {
+    const data = await getProductos();
+    setProductos(data);
+  };
+
   const handleDelete = async (id) => {
-    if (!confirm('¿Eliminar producto?')) return;
-    try {
-      await localProductService.remove(id);
-      setProducts(prev => prev.filter(p => p.id !== id));
-    } catch (err) {
-      console.error(err);
-      alert('Error al eliminar');
+    if (confirm("¿Seguro que quieres eliminar este producto?")) {
+      await deleteProducto(id);
+      loadProductos();
     }
   };
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p className="error">{error}</p>;
-
   return (
-    <section className="list-container">
-      <h2>Productos y Servicios</h2>
-
+    <div className="app-main">
+      <h2>Lista de Productos</h2>
+      <Link to="/productos/new" className="btn">+ Nuevo</Link>
+      <div className="table-wrapper">
       <table className="table">
         <thead>
           <tr>
-            <th>ID</th><th>Nombre</th><th>Categoría</th><th>Tipo</th><th>Precio</th><th>Stock</th><th>Acciones</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Proveedor</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {products.length === 0 && (
-            <tr><td colSpan="7">No hay productos</td></tr>
-          )}
-          {products.map(p => (
+          {productos.map(p => (
             <tr key={p.id}>
-              <td>{p.id}</td>
-              <td><Link to={`/productos/${p.id}`}>{p.nombre}</Link></td>
+              <td>{p.nombre}</td>
               <td>{p.categoria}</td>
               <td>{p.tipo}</td>
               <td>{p.precio}</td>
               <td>{p.stock}</td>
+              <td>{p.proveedor}</td>
               <td>
+                <Link to={`/productos/${p.id}`} className="btn small">Ver</Link>
                 <Link to={`/productos/${p.id}/edit`} className="btn small">Editar</Link>
-                <button className="btn danger small" onClick={() => handleDelete(p.id)}>Eliminar</button>
+                <button onClick={() => handleDelete(p.id)} className="btn small danger">
+                  Eliminar
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </section>
+      </div>
+    </div>
   );
 }
